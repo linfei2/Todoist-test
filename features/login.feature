@@ -6,15 +6,20 @@ Feature: Login
 
   Scenario: Login with valid credentials
     Given I am on login page
-    When I enter valid email
-    And I enter valid password
+    When I enter valid email and password
     And I click "Log in" button
     Then I should be redirected to home page
 
-  Scenario: Login with invalid credentials
+  Scenario Outline: Login with invalid credentials
     Given I am on login page
-    When I enter invalid email "dmtesting8@gmail.com"
-    And I enter invalid password "Admin123"
+    When I enter invalid <email> and <password>
     And I click "Log in" button
-    Then Message "Wrong email or password" is displayed
+    Then Error message is displayed
+
+    Examples:
+
+    | email                    | password   |
+    | dmtesting8@gmail.com     | Admin123   |
+    | xyz@email.com            | abc        |
+    | xyzemail.com             | Admin123   |
 
