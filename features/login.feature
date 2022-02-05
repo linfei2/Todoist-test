@@ -13,8 +13,8 @@ Feature: Login
 
   Scenario: Login with invalid credentials
     Given I am on login page
-    When I enter <invalid email>
-    And I enter <invalid password>
+    When I enter invalid email "dmtesting8@gmail.com"
+    And I enter invalid password "Admin123"
     And I click "Log in" button
     Then Message "Wrong email or password" is displayed
 

@@ -1,55 +1,69 @@
+import os
 from behave import given, when, then
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-@given(u'I launch Chrome browser')
+
+@given('I launch Chrome browser')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given I launch Chrome browser')
+    context.driver = webdriver.Chrome()
+    context.driver.maximize_window()
 
 
-@given(u'I open https://todoist.com/pl')
+@given('I open https://todoist.com/pl')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given I open https://todoist.com/pl')
+    context.driver.get("https://todoist.com/pl")
 
 
-@given(u'I click "Zaloguj się"')
+@given('I click "Zaloguj się"')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given I click "Zaloguj się"')
+    context.driver.find_element(By.LINK_TEXT, "Zaloguj się").click()
 
 
-@given(u'I am on login page')
+@given('I am on login page')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Given I am on login page')
+    assert context.driver.title == "Log in to Todoist"
 
 
-@when(u'I enter valid email')
+@when('I enter valid email')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I enter valid email')
+    valid_email = os.environ.get("T_MAIL")
+    context.driver.find_element(By.ID, "email").send_keys(valid_email)
 
 
-@when(u'I enter valid password')
+@when('I enter valid password')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I enter valid password')
+    valid_pass = os.environ.get("T_PASS")
+    context.driver.find_element(By.ID, "password").send_keys(valid_pass)
 
 
-@when(u'I click "Log in" button')
+@when('I click "Log in" button')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I click "Log in" button')
+    context.driver.find_element \
+        (By.XPATH, "//button[@class='submit_btn ist_button ist_button_red sel_login']").click()
 
 
-@then(u'I should be redirected to home page')
+@then('I should be redirected to home page')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: Then I should be redirected to home page')
+    WebDriverWait(context.driver, 10).until(EC.title_is("Today: Todoist"))
+    context.driver.close()
 
 
-@when(u'I enter <invalid email>')
+@when('I enter invalid email "{email}"')
+def step_impl(context, email):
+    context.driver.find_element(By.ID, "email").send_keys(email)
+
+
+@when('I enter invalid password "{pwd}"')
+def step_impl(context, pwd):
+    context.driver.find_element(By.ID, "password").send_keys(pwd)
+
+
+@then('Message "Wrong email or password" is displayed')
 def step_impl(context):
-    raise NotImplementedError(u'STEP: When I enter <invalid email>')
-
-
-@when(u'I enter <invalid password>')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: When I enter <invalid password>')
-
-
-@then(u'Message "Wrong email or password" is displayed')
-def step_impl(context):
-    raise NotImplementedError(u'STEP: Then Message "Wrong email or password" is displayed')
+    msg = WebDriverWait(context.driver, 10).until \
+        (EC.presence_of_element_located((By.XPATH, "//div[@class='error_msg']")))
+    assert msg.get_attribute("innerText") == "Wrong email or password."
+    context.driver.close()
