@@ -16,5 +16,5 @@ Feature: Login
     When I enter <invalid email>
     And I enter <invalid password>
     And I click "Log in" button
-    Then I should be redirected to home page
+    Then Message "Wrong email or password" is displayed
 
