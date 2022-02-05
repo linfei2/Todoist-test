@@ -1,7 +1,6 @@
 Feature: Login
   Background: Navigate to login page
-    Given  I launch Chrome browser
-    And  I open https://todoist.com/pl
+    Given  I am on https://todoist.com/pl
     And  I click "Zaloguj się"
 
   Scenario: Login with valid credentials

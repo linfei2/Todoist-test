@@ -1,18 +1,11 @@
 import os
 from behave import given, when, then
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@given('I launch Chrome browser')
-def step_impl(context):
-    context.driver = webdriver.Chrome()
-    context.driver.maximize_window()
-
-
-@given('I open https://todoist.com/pl')
+@given('I am on https://todoist.com/pl')
 def step_impl(context):
     context.driver.get("https://todoist.com/pl")
 
