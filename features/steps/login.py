@@ -10,7 +10,7 @@ def step_impl(context):
     context.driver.get("https://todoist.com/pl")
 
 
-@given('I click "Zaloguj się"')
+@when('I click "Zaloguj się"')
 def step_impl(context):
     context.driver.find_element(By.LINK_TEXT, "Zaloguj się").click()
 

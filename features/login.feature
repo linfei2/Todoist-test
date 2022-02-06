@@ -1,7 +1,7 @@
 Feature: Login
   Background: Navigate to login page
     Given  I am on https://todoist.com/pl
-    And  I click "Zaloguj się"
+    When  I click "Zaloguj się"
 
   Scenario: Login with valid credentials
     Given I am on login page

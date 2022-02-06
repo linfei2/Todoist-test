@@ -5,19 +5,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@when('I click "Zaloguj się"')
-def step_impl(context):
-    context.driver.find_element(By.LINK_TEXT, "Zaloguj się").click()
-
-
-@when('Enter valid credentials')
-def step_impl(context):
-    valid_email = os.environ.get("T_MAIL")
-    valid_pwd = os.environ.get("T_PASS")
-    context.driver.find_element(By.ID, "email").send_keys(valid_email)
-    context.driver.find_element(By.ID, "password").send_keys(valid_pwd)
-
-
 @given('I am on home page')
 def step_impl(context):
     WebDriverWait(context.driver, 10).until(EC.title_is("Today: Todoist"))
