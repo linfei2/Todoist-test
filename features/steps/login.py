@@ -37,7 +37,6 @@ def step_impl(context):
 @then('I should be redirected to home page')
 def step_impl(context):
     WebDriverWait(context.driver, 10).until(EC.title_is("Today: Todoist"))
-    context.driver.close()
 
 
 @when('I enter invalid {email} and {pwd}')
@@ -52,4 +51,3 @@ def step_impl(context):
     msg = WebDriverWait(context.driver, 10).until \
         (EC.presence_of_element_located((By.XPATH, "//div[@class='error_msg']")))
     assert msg.get_attribute("innerText") in error_msgs
-    context.driver.close()
