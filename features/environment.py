@@ -5,6 +5,7 @@ from selenium import webdriver
 @fixture
 def launch_browser(context):
     context.driver = webdriver.Chrome()
+    context.driver.maximize_window()
     yield context.driver
     context.driver.quit()
 
