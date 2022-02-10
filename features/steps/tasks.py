@@ -1,4 +1,3 @@
-from time import sleep
 from behave import given, when, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -71,3 +70,21 @@ def step_impl(context):
 def step_impl(context, updated):
     tasks = context.driver.find_elements(By.XPATH, "//li//div[@class='markdown_content task_content']")
     assert tasks[-1].text == updated
+
+
+@when('I click "More task actions"')
+def step_impl(context):
+    tasks = context.driver.find_elements(By.XPATH, "//li//div[@class='markdown_content task_content']")
+    ActionChains(context.driver).move_to_element(tasks[-1]).perform()
+    context.driver.find_element(By.XPATH, "//button[@data-testid='more_menu']").click()
+
+
+@when('click "Delete task"')
+def step_impl(context):
+    context.driver.find_element(By.XPATH, "//div[text()='Delete task']").click()
+
+
+@then('Task is deleted')
+def step_impl(context):
+    pass
+

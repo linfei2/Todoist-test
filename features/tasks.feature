@@ -18,4 +18,10 @@ Feature: Managing tasks
     And Change text to Updated task
     And I click "Save"
     Then The task is changed to Updated task
+#
+  Scenario: Delete task
+    Given I am logged in and there is a task in the inbox
+    When I click "More task actions"
+    And click "Delete task"
+    Then Task is deleted
 
