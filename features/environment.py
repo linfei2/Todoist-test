@@ -1,6 +1,5 @@
 from behave import fixture, use_fixture
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 
 @fixture

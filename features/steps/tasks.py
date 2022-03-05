@@ -1,4 +1,4 @@
-from behave import given, when, then, fixture, use_fixture
+from behave import given, when, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
