@@ -1,11 +1,19 @@
-from behave import given, when, then, use_fixture
-from selenium.common.exceptions import NoSuchElementException
+from behave import given, when, then, fixture, use_fixture
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-from features.environment import get_id
+
+
+tasks_list = []
+updated_tasks_list = []
+
+
+def get_tasks(context, lst):
+    tasks = context.driver.find_elements(By.XPATH, "//div[@class='task_list_item__content__wrapper']")
+    for task in tasks:
+        lst.append(task.get_attribute("id"))
 
 
 @given('I am on home page')
@@ -54,8 +62,9 @@ def step_impl(context):
 
 @when('I click "Edit task"')
 def step_impl(context):
-    task_id = use_fixture(get_id, context)
-    task_to_edit = WebDriverWait(context.driver, 10).until(EC.presence_of_element_located((By.XPATH, f"//div[@id='{task_id}']")))
+    get_tasks(context, tasks_list)
+    task_to_edit = WebDriverWait(context.driver, 10).\
+        until(EC.presence_of_element_located((By.XPATH, f"//div[@id='{tasks_list[-1]}']")))
     ActionChains(context.driver).move_to_element(task_to_edit).perform()
     context.driver.find_element(By.XPATH, "//button[@aria-label='Edit']").click()
 
@@ -76,16 +85,15 @@ def step_impl(context):
 
 @then('The task is changed to {updated}')
 def step_impl(context, updated):
-    task_id = use_fixture(get_id, context)
-    updated_task = context.driver.find_element(By.ID, task_id)
+    updated_task = context.driver.find_element(By.ID, tasks_list[-1])
     assert updated_task.text == updated
 
 
 @when('I click "More task actions"')
 def step_impl(context):
-    task_id = use_fixture(get_id, context)
+    get_tasks(context, tasks_list)
     task_to_delete = WebDriverWait(context.driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, f"//div[@id='{task_id}']")))
+        EC.presence_of_element_located((By.XPATH, f"//div[@id='{tasks_list[-1]}']")))
     ActionChains(context.driver).move_to_element(task_to_delete).perform()
     context.driver.find_element(By.XPATH, "//button[@data-testid='more_menu']").click()
 
@@ -98,9 +106,7 @@ def step_impl(context):
 
 @then('Task is deleted')
 def step_impl(context):
-    deleted_task_id = use_fixture(get_id, context)
-    try:
-        context.driver.find_element(By.ID, deleted_task_id)
-        return False
-    except NoSuchElementException:
-        return True
+    deleted_task = tasks_list[-1]
+    get_tasks(context, updated_tasks_list)
+    assert deleted_task not in updated_tasks_list
+

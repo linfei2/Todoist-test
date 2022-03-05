@@ -12,10 +12,3 @@ def launch_browser(context):
 
 def before_scenario(context, scenario):
     use_fixture(launch_browser, context)
-
-
-@fixture
-def get_id(context):
-    task = context.driver.find_elements(By.XPATH, "//div[@class='task_list_item__content__wrapper']")[-1]
-    task_id = task.get_attribute('id')
-    return task_id
