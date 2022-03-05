@@ -5,7 +5,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-
 from features.environment import get_id
 
 
@@ -42,7 +41,7 @@ def step_impl(context, task):
 @given('I am logged in and there is a task in the inbox')
 def step_impl(context):
     WebDriverWait(context.driver, 10).until(EC.presence_of_element_located((By.ID, "filter_inbox"))).click()
-    tasks = context.driver.find_elements(By.XPATH, "//li//div[@class='markdown_content task_content']")
+    tasks = context.driver.find_elements(By.XPATH, "//div[@class='markdown_content task_content']")
     if tasks:
         pass
     else:
@@ -102,5 +101,6 @@ def step_impl(context):
     deleted_task_id = use_fixture(get_id, context)
     try:
         context.driver.find_element(By.ID, deleted_task_id)
+        return False
     except NoSuchElementException:
-        pass
+        return True
