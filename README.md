@@ -14,7 +14,7 @@ Ubuntu 20.04.3
 ```
 
 #### Setup
-Installing dependencies
+Installing dependencies:
 ```
 pip install -r requirements.txt
 ```
