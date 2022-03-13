@@ -50,9 +50,7 @@ def step_impl(context, task):
 def step_impl(context):
     WebDriverWait(context.driver, 10).until(EC.presence_of_element_located((By.ID, "filter_inbox"))).click()
     tasks = context.driver.find_elements(By.XPATH, "//div[@class='markdown_content task_content']")
-    if tasks:
-        pass
-    else:
+    if not tasks:
         context.execute_steps('''given I am on home page
         when I click "+Add task"
         and Enter Sample task and schedule it
